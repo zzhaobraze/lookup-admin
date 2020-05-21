@@ -10,7 +10,7 @@
   "scripts": {
   },
   "env": {
-    "LOGIN_KEY": {
+    "LOCKUP_CODEWORD": {
 			"description": "ADMIN Login code.",
       "required": true
     },
