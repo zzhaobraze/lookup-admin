@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Braze Data Lookup</title>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'  %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%= stylesheet_link_tag('alertify.css') %>
+    <%= stylesheet_link_tag('lookup.css') %>
+    <%= javascript_include_tag('alertify.js') %>
+    <%= javascript_include_tag('papaparse.min.js') %>
+    <%= javascript_include_tag('lookup.js') %>
+
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "name": "growth-share-braze-lookup-admin",
+	"keywords": [
+		"braze",
+		"rails",
+    "ruby"
+	],
+	"logo": "https://www.braze.com/assets/img/logo-braze-stroked-monogram.svg",
+	"website": "https://www.braze.com/",
+  "scripts": {
+  },
+  "env": {
+    "LOGIN_KEY": {
+			"description": "ADMIN Login code.",
+      "required": true
+    },
+    "LOCKUP_HINT": {
+      "description": "ADMIN Login Hint.",
+      "required": false
+    },
+    "LOOKUP_DB_URL": {
+			"description": "Postgres database URL in the form of postgres://[username]:[password]@[uri]:[port]/[database]",
+      "required": true
+    },
+    "DB_SCHEMA": {
+			"description": "Database Schema, default public",
+			"value": "public",
+      "required": false
+    },
+    "DB_TABLE": {
+			"description": "Database Table, default lookup",
+			"value": "lookup",
+      "required": false
+    },
+    "DB_KEY_FIELD": {
+			"description": "Table Lookup field, default id",
+			"value": "id",
+      "required": false
+    },
+    "DB_VALUE_FIELD": {
+			"description": "Table Lookup value from key, default value",
+			"value": "value",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+			"size": "free"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-ruby.git"
+    }
+  ]
+}

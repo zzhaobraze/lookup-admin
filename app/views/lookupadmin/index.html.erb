@@ -1,0 +1,239 @@
+<div id="lookup_main" class="row">
+  <div class="col-12">
+    <input type="text" class="form-control" placeholder="Search Records" id="searchRecordValue" name="searchRecord" value="">
+    <button type="button" id="searchRecords" data-key="<%=h @lookup_key %>" data-val="<%=h @lookup_field %>" data-limit="<%= @sql_limit %>" data-offset="<%= @sql_offset %>"  class="btn btn-primary" value="searchRecords" style=" ">Search</button>
+  </div>
+
+  <div id="records_div" class="col-12">
+    <div id="recordsHeader" class="row">
+      <div class="row col-12">
+      <div class="record_key col-4 col-xl-2">
+        <%=h @lookup_key %>
+      </div>
+      <div class="record_value col-6 col-xl-9">
+       <%=h @lookup_field %>
+       </div>
+       <div class="record_action col-2 col-xl-1">
+       </div>
+     </div>
+   </div>
+    <div id="recordsList" class="row">
+  <% unless @lookup.nil? %>
+    <% @lookup.each do |lk| -%>
+    <div class="row col-12" id="<%=h html_id(lk['id']) %>">
+      <div class="record_key col-4 col-xl-2">
+        <%=h lk['id'] %>
+      </div>
+      <div class="record_value col-6 col-xl-9">
+         <%=h lk['value'] %>
+       </div>
+       <div class="record_action col-2 col-xl-1">
+         <img src="/assets/edit-24px.svg" class="edit" data-source="<%=h html_id(lk['id']) %>" />
+         <img src="/assets/delete-24px.svg" class="delete" data-source="<%=h html_id(lk['id']) %>" />
+       </div>
+     </div>
+    <% end -%>
+  </div>
+    <div class="col-12" id="moreresults_div">
+      <button type="button" id="moreResults" data-key="<%=h @lookup_key %>" data-val="<%=h @lookup_field %>" data-count="<%= @lookup.size %>" data-limit="<%= @sql_limit %>" data-offset="<%= @sql_offset + @sql_limit %>" class="btn btn-primary" value="moreResults" >More Results</button>
+    </div>
+  <% end -%>
+  </div>
+  <div class="col-12" id="lookupFooter">
+    <button type="button" id="newRecord" class="btn btn-primary" value="newRecord" style="margin: 0 15px 0 0; ">New Record</button>
+    <button type="button" id="downloadRecords" class="btn btn-primary" value="downloadRecords" style="margin: 0 15px 0 0; ">Download Records</button>
+
+    <label type="button" id="uploadRecords" class="btn btn-primary" for="uploadCSV" style="margin: 0 15px 0 0; ">Upload CSV</label>
+    <input type="file" id="uploadCSV" name="csv_upload" accept=".csv,.txt,text/csv" data-key="<%=h @lookup_key %>" data-val="<%=h @lookup_field %>"  style="opacity: 0;">
+
+    <button type="button" id="clearTable" class="btn btn-danger float-right" value="clearTable">CLEAR ALL</button>
+  </div>
+
+</div>
+
+
+
+<div class="modal fade" id="uploadRecordModal" tabindex="-1" role="dialog" aria-labelledby="uploadRecordModal" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Upload:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="uploadRecordForm">
+        <textarea style="width:0px; height:0px;display:none;" rows="0" cols="0" id="parsedJson" name="records"></textarea>
+      <div class="modal-body">
+        <div class="form-group">
+          <label  class="col-form-label">Results:</label>
+          <div id="parsedResults"></div>
+        </div>
+        <div class="form-group">
+          <label for="newValue" class="col-form-label">Errors:</label>
+          <div id="parsedErrors"></div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Upload Results</button>
+      </div>
+      <div class="modal-disclaimer float-right">
+        <p>Existing Keys will be updated.Make sure there's no duplicate key in the file.</p>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newRecordModal" tabindex="-1" role="dialog" aria-labelledby="newRecordModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="newRecordForm">
+
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="newId" class="col-form-label">Key:</label>
+            <input type="text" class="form-control" id="newId" name="key" required>
+          </div>
+          <div class="form-group">
+            <label for="newValue" class="col-form-label">Value:</label>
+            <textarea class="form-control" id="newValue" name="value" required></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Create Record</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="editRecordForm">
+      <input type="hidden" name="key" id="editRecordID" value="" />
+
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="editId" class="col-form-label">Key:</label>
+            <input type="text" class="form-control" id="editId" name="editId" disabled>
+          </div>
+          <div class="form-group">
+            <label for="editValue" class="col-form-label">Value:</label>
+            <textarea class="form-control" id="editValue" name="value" required></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update Record</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteRecordModal" tabindex="-1" role="dialog" aria-labelledby="deleteRecordModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header"  style="background-color: #ffdddd;">
+        <h5 class="modal-title">Record</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="deleteRecordForm">
+      <input type="hidden" name="key" id="deleteRecordID" value="" />
+
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="deleteId" class="col-form-label">Key:</label>
+            <input type="text" class="form-control" id="deleteId" name="deleteId" disabled>
+          </div>
+          <div class="form-group">
+            <label for="deleteValue" class="col-form-label">Value:</label>
+            <textarea class="form-control" id="deleteValue" name="value" disabled></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete Record</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="clearTableModal" tabindex="-1" role="dialog" aria-labelledby="clearTableModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #ffdddd;">
+        <h5 class="modal-title">Clear All Records</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="clearTableForm">
+      <input type="hidden" name="confirmDate" id="deleteConfirm" value="<%=h Date.today.strftime('%Y-%m-%d') %>" />
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="company_name" class="col-form-label">Confirm deletion of <b>"ALL RECORDS"</b> by typing today's date "<%=h Date.today.strftime('%Y-%m-%d') %>" below:</label>
+            <input type="text" class="form-control" id="clearTableConfim" name="confirm" value="" required>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">clear Record</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="loading_modal" tabindex="-1" role="dialog" aria-labelledby="loading" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">LOADING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

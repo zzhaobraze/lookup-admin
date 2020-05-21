@@ -1,0 +1,90 @@
+// Place all the styles related to the controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+	padding-bottom: 45px;
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#lookup_main {
+	font-size: 16px;
+	border: 1px solid #33333333;
+	padding: 15px;
+	margin: 15px;
+
+	#searchRecordValue {
+		display: inline-block;
+		width: 25%;
+	}
+	.record_key {
+	}
+	#recordsHeader {
+		padding: 30px 30px 0 30px ;
+		font-weight: bold;
+	}
+	#recordsList {
+		padding: 0px 30px 15px 30px;
+	}
+	#recordsList, #recordsHeader {
+
+		> div {
+			border: 1px solid black;
+		}
+		.record_key, .record_value {
+			padding: 5px;
+		}
+		.record_key {
+			border-right: 1px solid black;
+		}
+	}
+	#lookupFooter {
+		padding-top: 30px;
+	}
+}
+
+#uploadRecordModal {
+	#parsedResults, #parsedErrors {
+		border: 1px solid #33333333;
+		width: 100%;
+		padding: 5px 30px;
+		.row {
+			border: 1px solid #cccccccc;
+		}
+	}
+	#parsedResults {
+		min-height: 300px;
+		max-height: 300px;
+		overflow: auto;
+		.row {
+			:first-child {
+				border-right: 1px solid #cccccccc;
+			}
+		}
+	}
+	#parsedErrors {
+		max-height: 100px;
+		overflow: auto;
+		.row {
+			:first-child, :nth-child(2) {
+				border-right: 1px solid #cccccccc;
+			}
+		}
+	}
+	.modal-disclaimer{
+		padding: 0 1rem;
+		p {
+			font-size: 10px;
+		}
+	}
+}
+
+.modal-header {
+  background-color: #c4d6f5;
+}
+
+.spinner-border {
+	width: 4rem;
+	height: 4rem;
+}
+
