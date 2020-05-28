@@ -18,10 +18,6 @@
       "description": "ADMIN Login Hint.",
       "required": false
     },
-    "LOOKUP_DB_URL": {
-			"description": "Postgres database URL in the form of postgres://[username]:[password]@[uri]:[port]/[database]",
-      "required": true
-    },
     "DB_SCHEMA": {
 			"description": "Database Schema, default public",
 			"value": "public",

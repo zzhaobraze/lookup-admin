@@ -23,18 +23,18 @@ default: &default
 
 test:
   <<: *default
-  url: <%= ENV['LOOKUP_DB_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 development:
   <<: *default
-  url: <%= ENV['LOOKUP_DB_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: 
+  #username:
 
   # The password associated with the postgres role (username).
   #password:
@@ -83,4 +83,4 @@ development:
 
 production:
   <<: *default
-  url: <%= ENV['LOOKUP_DB_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
